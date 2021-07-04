@@ -6,6 +6,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import { valuesRouter } from "./values/values.router";
+import { errorHandler } from "./middleware/error.middleware";
+import { notFoundHandler } from "./middleware/not-found.middleware";
 
 dotenv.config();
 
@@ -27,6 +29,9 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use("/api/values", valuesRouter);
+
+app.use(errorHandler);
+app.use(notFoundHandler);
 
 /**
  * Server Activation
