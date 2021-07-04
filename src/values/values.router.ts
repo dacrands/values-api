@@ -5,6 +5,8 @@ import express, { Request, Response } from "express";
 import * as ValueService from "./values.service";
 import { BaseValue, Value } from "./value.interface";
 
+import { checkJwt } from "../middleware/authz.middleware";
+
 /**
  * Router Definition
  */
@@ -13,6 +15,8 @@ export const valuesRouter = express.Router();
 /**
  * Controller Definitions
  */
+//  Authorize
+valuesRouter.use(checkJwt);
 
 // GET items
 valuesRouter.get("/", async (req: Request, res: Response) => {
