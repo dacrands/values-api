@@ -7,6 +7,7 @@ import cors from "cors";
 import helmet from "helmet";
 import mongoose from "mongoose";
 import { valuesRouter } from "./values/values.router";
+import { activitiesRouter } from "./activities/activities.router";
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
 
@@ -30,6 +31,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use("/api/values", valuesRouter);
+app.use("/api/activities", activitiesRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
