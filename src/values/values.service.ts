@@ -10,7 +10,7 @@ export const findAll = async():Promise<IValue[]> =>
     await Value.find({});    
 
 export const find = async (id: string): Promise<IValue> =>    
-    await Value.findById(id).exec();    
+    await Value.findById(id);    
 
 export const create = async (newValue: IValue): Promise<IValue> => {
     const value = new Value({ ...newValue });
