@@ -10,12 +10,13 @@ export const findAll = async():Promise<IValue[]> =>
     await Value.find({});    
 
 export const find = async (id: string): Promise<IValue> =>    
-    await Value.findById(id);    
+    await Value.findById(id).populate("activities");    
 
 export const create = async (newValue: IValue): Promise<IValue> => {
     const value = new Value({ ...newValue });
     await value.save();    
-    return value._id;
+    
+    return value;
 };
 
 export const update = async (
@@ -28,9 +29,8 @@ export const update = async (
         return null;
     }    
 
-    return value._id;
+    return value;
 };
 
-export const remove =  async (id: string): Promise<null | void> => {
+export const remove =  async (id: string): Promise<null | void> =>
     await Value.findByIdAndDelete(id);
-};
