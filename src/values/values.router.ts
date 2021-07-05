@@ -3,7 +3,7 @@
  */
 import express, { Request, Response } from "express";
 import * as ValueService from "./values.service";
-import { BaseValue, Value } from "./value.interface";
+import { IValue } from "./value.interface";
 
 import { checkJwt } from "../middleware/authz.middleware";
 
@@ -16,12 +16,12 @@ export const valuesRouter = express.Router();
  * Controller Definitions
  */
 //  Authorize
-valuesRouter.use(checkJwt);
+// valuesRouter.use(checkJwt);
 
-// GET items
+// GET values
 valuesRouter.get("/", async (req: Request, res: Response) => {
     try {
-        const values: Value[] = await ValueService.findAll();
+        const values: IValue[] = await ValueService.findAll();
 
         res.status(200).send(values);
     } catch (e) {
@@ -29,12 +29,12 @@ valuesRouter.get("/", async (req: Request, res: Response) => {
     }
 });
 
-// GET items/:id
+// GET values/:id
 valuesRouter.get("/:id", async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id, 10);
+    const id: string = req.params.id;
 
     try {
-        const value: Value = await ValueService.find(id);
+        const value: IValue = await ValueService.find(id);
 
         if (value) {
             return res.status(200).send(value);
@@ -46,11 +46,10 @@ valuesRouter.get("/:id", async (req: Request, res: Response) => {
     }
 });
 
-// POST items
+// POST values
 valuesRouter.post("/", async (req: Request, res: Response) => {
     try {
-        const value: BaseValue = req.body;
-        console.log(value);
+        const value: IValue = req.body;
         const newValue = await ValueService.create(value);
 
         res.status(201).json(newValue);        
@@ -59,14 +58,14 @@ valuesRouter.post("/", async (req: Request, res: Response) => {
     }
 });
 
-// PUT items/:id
+// PUT values/:id
 valuesRouter.put("/:id", async (req: Request, res: Response) => {
-    const id: number = parseInt(req.params.id, 10);
+    const id: string = req.params.id;
 
     try {
-        const valueUpdate: Value = req.body;
+        const valueUpdate: IValue = req.body;
 
-        const existingValue: Value = await ValueService.find(id);
+        const existingValue: IValue = await ValueService.find(id);
 
         if (existingValue) {
             const updatedValue = await ValueService.update(id, valueUpdate);
@@ -81,10 +80,10 @@ valuesRouter.put("/:id", async (req: Request, res: Response) => {
     }
 });
 
-// DELETE items/:id
+// DELETE values/:id
 valuesRouter.delete("/:id", async (req: Request, res: Response) => {
     try {
-        const id: number = parseInt(req.params.id, 10);
+        const id: string = req.params.id;
         await ValueService.remove(id);
         
         res.sendStatus(204);
