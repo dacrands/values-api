@@ -1,7 +1,7 @@
 /**
  * Data Model Interfaces
  */
-import { IValue, Value } from "./value.interface";
+import { IValue, Value } from "./value.model";
 
 /**
  * Service Methods

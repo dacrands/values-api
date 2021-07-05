@@ -3,7 +3,7 @@
  */
 import express, { Request, Response } from "express";
 import * as ValueService from "./values.service";
-import { IValue } from "./value.interface";
+import { IValue } from "./value.model";
 
 import { checkJwt } from "../middleware/authz.middleware";
 
