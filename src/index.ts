@@ -5,6 +5,7 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import mongoose from "mongoose";
 import { valuesRouter } from "./values/values.router";
 import { errorHandler } from "./middleware/error.middleware";
 import { notFoundHandler } from "./middleware/not-found.middleware";
@@ -32,6 +33,17 @@ app.use("/api/values", valuesRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
+
+/**
+ *  DB Configuration
+ */
+ mongoose.connect(process.env.MONGO_URI!, { useNewUrlParser: true, useFindAndModify: false }); 
+ 
+ //Get the default connection
+ const db = mongoose.connection;
+ 
+ //Bind connection to error event (to get notification of connection errors)
+ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 /**
  * Server Activation
