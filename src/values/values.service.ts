@@ -1,74 +1,36 @@
 /**
  * Data Model Interfaces
  */
-import { BaseValue, Value } from "./value.interface";
-import { Values } from "./values.interface";
-
-/**
- * In-Memory Store
- */
-let values: Values = {
-    1: {
-        id: 1,
-        name: "Health",
-        description: "Exercising, eating well, mental-hygeine",
-        importance: 10
-    },
-    2: {
-        id: 2,
-        name: "Learning",
-        description: "Pursuit of knowledge",
-        importance: 10
-    },
-    3: {
-        id: 3,
-        name: "Health",
-        description: "Exercising, eating well, mental-hygeine",
-        importance: 10
-    }
-}
+import { IValue, Value } from "./value.interface";
 
 /**
  * Service Methods
  */
-export const findAll = async():Promise<Value[]> =>
-    Object.values(values);
+export const findAll = async():Promise<IValue[]> => 
+    await Value.find({});    
 
-export const find = async (id: number): Promise<Value> =>
-    values[id];
+export const find = async (id: string): Promise<IValue> =>    
+    await Value.findById(id).exec();    
 
-export const create = async (newValue: BaseValue): Promise<Value> => {
-    const id = new Date().valueOf();
-    
-    values[id] = {
-        id,
-        ...newValue
-    }
-
-    return values[id];
+export const create = async (newValue: IValue): Promise<IValue> => {
+    const value = new Value({ ...newValue });
+    await value.save();    
+    return value._id;
 };
 
 export const update = async (
-    id: number,
-    valueUpdate: BaseValue
-): Promise<Value | null> => {
-    const value = await find(id);
+    id: string,
+    valueUpdate: IValue
+): Promise<IValue | null> => {
+    const value = await Value.findByIdAndUpdate(id, {...valueUpdate});
 
     if (!value) {
         return null;
-    }
+    }    
 
-    values[id] = { id, ...valueUpdate };
-
-    return values[id];
+    return value._id;
 };
 
-export const remove =  async (id: number): Promise<null | void> => {
-    const value = await find(id);
-
-    if (!value) {
-        return null;
-    }
-
-    delete values[id];
+export const remove =  async (id: string): Promise<null | void> => {
+    await Value.findByIdAndDelete(id);
 };
