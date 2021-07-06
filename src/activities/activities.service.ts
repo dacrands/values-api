@@ -57,6 +57,7 @@ export const remove = async (id: string): Promise<null | void> => {
 
     if (value) {        
         value.activities.pull(id);
+        value.save();
     }
 
     await activity.remove();
