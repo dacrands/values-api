@@ -1,15 +1,16 @@
 import { Schema, model } from 'mongoose';
-import { IValue } from '../values/value.model';
 
 export interface IActivity {
     name: string;
     duration: number;
+    time: Date;
     value: string;
 }
 
 const schema = new Schema<IActivity>({
     name: { type: String, required: true },
     duration: { type: Number, required: true },
+    time: { type: Date, required: true},
     value: {
         ref: 'Value',
         type: Schema.Types.ObjectId,
